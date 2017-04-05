@@ -213,11 +213,31 @@ IRCServer::processRequest( int fd )
 	printf("COMMAND <user> <password> <arguments>. See below.\n");
 	printf("You need to separate the commandLine into those components\n");
 	printf("For now, command, user, and password are hardwired.\n");
-
-	const char * command = "ADD-USER";
-	const char * user = "peter";
-	const char * password = "spider";
-	const char * args = "";
+	
+	std::string s1 = commandLine;
+	char * command;
+	char * user;
+	char * password;
+	char * args;
+	if(s1.find(" ") != std::string::npos) {
+		command = s1.substr(0, s1.find(" "));
+		s1 = s1.substr(s1.find(" ") + 1);
+	}
+	if(s1.find(" ") != std::string::npos) {
+		user = s1.substr(0, s1.find(" "));
+		s1 = s1.substr(s1.find(" ") + 1);
+	}
+	if(s1.find(" ") != std::string::npos) {
+		password = s1.substr(0, s1.find(" "));
+		s1 = s1.substr(s1.find(" ") + 1);
+		if(s1.find(" ") != std::string::npos) {
+			args = "";
+		} else {
+			args = s1;
+		}
+	} else {
+		password = s1;
+	}
 
 	printf("command=%s\n", command);
 	printf("user=%s\n", user);
