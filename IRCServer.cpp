@@ -35,7 +35,7 @@ const char * usage =
 #include "IRCServer.h"
 
 int QueueLength = 5;
-//std::unordered_map<std::string, std::string> users;
+std::unordered_map<std::string, std::string> users;
 
 //test
 
