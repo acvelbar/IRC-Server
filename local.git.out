@@ -1,0 +1,25 @@
+On branch master
+Untracked files:
+	-c
+	-std=c++11
+	.local.git.out
+	.local.total.out
+	IRCServer.org
+	Makefile
+	TestIRCServer
+	none
+	password.txt
+	talk-server
+	test-server1.sh
+	test-server10.sh
+	test-server2.sh
+	test-server3.sh
+	test-server4.sh
+	test-server5.sh
+	test-server6.sh
+	test-server7.sh
+	test-server8.sh
+	test-server9.sh
+	testall
+
+nothing added to commit but untracked files present

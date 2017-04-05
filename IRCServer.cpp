@@ -30,10 +30,12 @@ const char * usage =
 #include <stdio.h>
 #include <time.h>
 #include <string>
+#include <unordered_map>
 
 #include "IRCServer.h"
 
 int QueueLength = 5;
+std::unordered_map<std::string, std::string> users;
 
 //test
 
