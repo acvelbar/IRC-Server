@@ -221,23 +221,23 @@ IRCServer::processRequest( int fd )
 	std::string password1;
 	std::string args1;
 	if(s1.find(" ") != std::string::npos) {
-		command = s1.substr(0, s1.find(" "));
+		command1 = s1.substr(0, s1.find(" "));
 		s1 = s1.substr(s1.find(" ") + 1);
 	}
 	if(s1.find(" ") != std::string::npos) {
-		user = s1.substr(0, s1.find(" "));
+		user1 = s1.substr(0, s1.find(" "));
 		s1 = s1.substr(s1.find(" ") + 1);
 	}
 	if(s1.find(" ") != std::string::npos) {
-		password = s1.substr(0, s1.find(" "));
+		password1 = s1.substr(0, s1.find(" "));
 		s1 = s1.substr(s1.find(" ") + 1);
 		if(s1.find(" ") != std::string::npos) {
-			args = "";
+			args1 = "";
 		} else {
-			args = s1;
+			args1 = s1;
 		}
 	} else {
-		password = s1;
+		password1 = s1;
 	}
 	const char * command = command1.c_str();
 	const char * user = user1.c_str();
