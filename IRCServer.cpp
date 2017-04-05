@@ -216,10 +216,10 @@ IRCServer::processRequest( int fd )
 	printf("For now, command, user, and password are hardwired.\n");
 	
 	std::string s1 = commandLine;
-	std::string command;
-	std::string user;
-	std::string password;
-	std::string args;
+	std::string command1;
+	std::string user1;
+	std::string password1;
+	std::string args1;
 	if(s1.find(" ") != std::string::npos) {
 		command = s1.substr(0, s1.find(" "));
 		s1 = s1.substr(s1.find(" ") + 1);
@@ -239,6 +239,10 @@ IRCServer::processRequest( int fd )
 	} else {
 		password = s1;
 	}
+	const char * command = command1.c_str();
+	const char * user = user1.c_str();
+	const char * password = password1.c_str();
+	const char * args = args1.c_str();
 
 	printf("command=%s\n", command);
 	printf("user=%s\n", user);
