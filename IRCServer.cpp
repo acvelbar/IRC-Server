@@ -215,7 +215,7 @@ IRCServer::processRequest( int fd )
 	printf("You need to separate the commandLine into those components\n");
 	printf("For now, command, user, and password are hardwired.\n");
 	
-	std::string s1 = commandLine;
+	std::string s1 = std::string(commandLine);
 	std::string command1;
 	std::string user1;
 	std::string password1;
