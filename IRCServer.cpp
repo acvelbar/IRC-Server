@@ -38,6 +38,7 @@ const char * usage =
 using namespace std;
 
 int QueueLength = 5;
+int totalRooms = 0;
 std::unordered_map<std::string, std::string> users;
 fstream passFile;
 
@@ -280,6 +281,12 @@ IRCServer::processRequest( int fd )
 	else if (!strcmp(command, "GET-ALL-USERS")) {
 		getAllUsers(fd, user, password, args);
 	}
+	else if (!strcmp(command, "CREATE-ROOM")) {
+		createRoom(fd, user, password, args);
+	}
+	else if (!strcmp(command, "LIST-ROOMS")) {
+		listRooms(fd, user, password, args);
+	}
 	else {
 		const char * msg =  "UNKNOWN COMMAND\r\n";
 		write(fd, msg, strlen(msg));
@@ -336,16 +343,85 @@ void
 IRCServer::addUser(int fd, const char * user, const char * password, const char * args)
 {
 	// Here add a new user. For now always return OK.
-
-	const char * msg =  "OK\r\n";
-	write(fd, msg, strlen(msg));
-
+	int found = 0;
+	for(int i = 0; i < usernames.size(); i++) {
+		if(!(usernames[i].compare(user))) {
+			found = 1;
+		}
+	}
+	if(found) {
+		const char * message = "DENIED\r\n";
+		write(fd, message, strlen(message));
+	} else {
+		passFile.open("password.txt");
+		passFile << user << "\n" << password << "\n\n";
+		passFile.close();
+		usernames.push_back(user);
+		passwords.push_back(password);
+		const char * message = "OK\r\n";
+		write(fd, message, strlen(message));
+	}
 	return;		
 }
 
 void
+IRCServer::createRoom(int fd, const char * user, const char * password, const char * args) {
+	if(checkPassword(fd, user, password)) {
+		int roomFound = 0;
+		for(int i = 0; i < rooms.size(); i++) {
+			if(!(rooms[i].compare(args))) {
+				roomFound = 1;
+			}
+		}
+		if(!roomFound) {
+			rooms.push_back(args);
+			totalRooms++;
+			const char * message = "OK\r\n";
+			write(fd, message, strlen(message));
+		} else {
+			const char * message = "DENIED\r\n";
+			write(fd, message, strlen(message));
+		}
+	} else {
+		const char * message = "ERROR (Incorrect password)\r\n";
+		write(fd, message, strlen(message));
+	}
+	return;
+}
+void
+IRCServer::listRooms(int fd, const char * user, const char * password, const char * args) {
+	if(checkPassword(fd, user, password)) {
+		vector<string> temp(rooms);
+		sort(temp.begin(), temp.end());
+		for(int i = 0; i < rooms.size(); i++) {
+			const char * message = temp[i].c_str();
+			write(fd, message, strlen(message));
+			const char * msg = "\r\n";
+			write(fd, msg, strlen(msg));
+		}
+	} else { 
+		const char * message = "ERROR (Incorrect password)\r\n";
+		write(fd, message, strlen(message));
+	}
+	return;
+}
+void
 IRCServer::enterRoom(int fd, const char * user, const char * password, const char * args)
 {
+	if(checkPassword(fd, user, password)) {
+		int roomFound = 0;
+		for(int i = 0; i < rooms.size(); i++) {
+			if(!(rooms[i].compare(args))) {
+				roomFound = 1;
+			}
+		}
+		if(!roomFound) {
+			const char * message = "ERROR (Room not found)\r\n";
+			write(fd, message, strlen(message));
+		} else {
+			
+		}
+	}
 }
 
 void
