@@ -461,7 +461,7 @@ IRCServer::getAllUsers(int fd, const char * user, const char * password,const  c
 		write(fd, msg, strlen(msg));
 	} else {
 		const char * message = "ERROR (Incorrect Password)\r\n";
-		write(fd, message, strlen(message);
+		write(fd, message, strlen(message));
 	}
 }
 
