@@ -448,6 +448,20 @@ IRCServer::getUsersInRoom(int fd, const char * user, const char * password, cons
 void
 IRCServer::getAllUsers(int fd, const char * user, const char * password,const  char * args)
 {
-
+	if(checkPassword(fd, user, password)) {
+		vector<string> temp (users);
+		sort(temp.begin(), temp.end());
+		for(int i = 0; i < temp.size(); i++) {
+			const char * message = temp[i].c_str();
+			write(fd, message, strlen(message));
+			const char * msg = "\r\n";
+			write(fd, msg, strlen(msg));
+		}
+		const char * msg = "\r\n";
+		write(fd, msg, strlen(msg));
+	} else {
+		const char * message = "ERROR (Incorrect Password)\r\n";
+		write(fd, message, strlen(message);
+	}
 }
 
