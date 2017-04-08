@@ -449,7 +449,7 @@ void
 IRCServer::getAllUsers(int fd, const char * user, const char * password,const  char * args)
 {
 	if(checkPassword(fd, user, password)) {
-		vector<string> temp (users);
+		vector<string> temp (usernames);
 		sort(temp.begin(), temp.end());
 		for(int i = 0; i < temp.size(); i++) {
 			const char * message = temp[i].c_str();
