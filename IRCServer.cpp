@@ -33,6 +33,7 @@ const char * usage =
 #include <unordered_map>
 #include <fstream>
 #include <vector>
+#include <algorithm>
 
 #include "IRCServer.h"
 using namespace std;
