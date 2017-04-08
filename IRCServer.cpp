@@ -39,7 +39,7 @@ using namespace std;
 
 int QueueLength = 5;
 std::unordered_map<std::string, std::string> users;
-fstream passfile;
+fstream passFile;
 
 vector<string> usernames;
 vector<string> passwords;
@@ -324,7 +324,7 @@ IRCServer::initialize()
 bool
 IRCServer::checkPassword(int fd, const char * user, const char * password) {
 	// Here check the password
-	for(int i = 0; i < paswords.size(); i++) {
+	for(int i = 0; i < passwords.size(); i++) {
 		if(!(passwords[i].compare(password)) && !(usernames[i].compare(user))) {
 			return true;
 		}
