@@ -31,11 +31,19 @@ const char * usage =
 #include <time.h>
 #include <string>
 #include <unordered_map>
+#include <fstream>
+#include <vector>
 
 #include "IRCServer.h"
+using namespace std;
 
 int QueueLength = 5;
 std::unordered_map<std::string, std::string> users;
+fstream passfile;
+
+vector<string> usernames;
+vector<string> passwords;
+vector<string> rooms;
 
 //test
 
@@ -288,7 +296,25 @@ void
 IRCServer::initialize()
 {
 	// Open password file
-
+	passFile.open("password.txt");
+	string s1;
+	int i = 1;
+	if(passFile.is_open()) {
+		while(getline(passFile, s1)) {
+			if((i % 3 == 1)) { //skip every third line format: username\npassword\n\n
+				//Initialize usernames
+				usernames.push_back(s1);
+				i++;
+				getline(passFile, s1);
+				passwords.push_back(s1);
+				i++;
+			} else {
+				i++;
+			}
+		}
+		passFile.close();
+	}
+	
 	// Initialize users in room
 
 	// Initalize message list
@@ -298,7 +324,12 @@ IRCServer::initialize()
 bool
 IRCServer::checkPassword(int fd, const char * user, const char * password) {
 	// Here check the password
-	return true;
+	for(int i = 0; i < paswords.size(); i++) {
+		if(!(passwords[i].compare(password)) && !(usernames[i].compare(user))) {
+			return true;
+		}
+	}
+	return false;
 }
 
 void
