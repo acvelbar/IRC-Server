@@ -459,16 +459,17 @@ IRCServer::sendMessage(int fd, const char * user, const char * password, const c
 	char roomName[100];
 	char message[1025];
 	int n = sscanf(args, "%s %[^\n]", roomName, message);
+	string room = roomName;
 	if(checkPassword(fd, user, password)) {
-		if(users.find(user) != users.end() && !(users.find(user)->second.compare(roomName))) {
-			if(messages.find(roomName) == messages.end()) {
+		if(users.find(user) != users.end() && !(users.find(user)->second.compare(room))) {
+			if(messages.find(room) == messages.end()) {
 				string s1 = "0 " + user + " " + message + "\r\n";
-				messages.insert(make_pair(roomName, s1));
+				messages.insert(make_pair(room, s1));
 			} else {
-				string s1 = numM[roomName] + " " + user + " " + message + "\r\n";
-				messages[roomName] += s1;
+				string s1 = numM[room] + " " + user + " " + message + "\r\n";
+				messages[room] += s1;
 			}
-			numM[roomName]++;
+			numM[room]++;
 			const char * msg = "OK\r\n";
 			write(fd, msg, strlen(msg));
 		} else {
