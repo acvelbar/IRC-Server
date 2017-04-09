@@ -42,9 +42,8 @@ using namespace std;
 
 int QueueLength = 5;
 int totalRooms = 0;
-map<string, string> users; //username, room
-map<string, vector<string>> mess;	//room, allmessages
-map<string, int> numM;
+map<string, vector<string>> users;
+map<string, vector<string>> mess;
 fstream passFile;
 
 vector<string> usernames;
@@ -434,7 +433,9 @@ IRCServer::enterRoom(int fd, const char * user, const char * password, const cha
 			const char * message = "ERROR (No room)\r\n";
 			write(fd, message, strlen(message));
 		} else {
-			users[user] = args;
+			vector<string> v1;
+			users.insert(make_pair(user, v1));
+			users[user].push_back(args);
 			const char * msg = "OK\r\n";
 			write(fd, msg, strlen(msg));
 		}
@@ -449,11 +450,15 @@ IRCServer::leaveRoom(int fd, const char * user, const char * password, const cha
 {
 	if(checkPassword(fd, user, password)) {
 		if(users.find(user) != users.end()) {
-			if(!(users[user].compare(args))) {
-				users.erase(user);
-				const char * msg = "OK\r\n";
-				write(fd, msg, strlen(msg));
-			} else {
+			int found = 0;
+			for(int i = 0; i < users[user].size(); i++) {
+				if(!(users[user][i].compare(args))) {
+					users.erase(user);
+					const char * msg = "OK\r\n";
+					write(fd, msg, strlen(msg));
+				}
+			}
+			if(!found) {
 				const char * msg = "DENIED\r\n";
 				write(fd, msg, strlen(msg));
 			}
@@ -467,6 +472,15 @@ IRCServer::leaveRoom(int fd, const char * user, const char * password, const cha
 	}	
 }
 
+int loopUsers(vector<string> s1, string s2) {
+	for(int i = 0, i < s1.size(), i++) {
+		if(!(s1[i].compare(s2))) {
+			return 1; //FOUND
+		}
+	}
+	return 0; //No match
+}
+
 void
 IRCServer::sendMessage(int fd, const char * user, const char * password, const char * args)
 {
@@ -476,7 +490,7 @@ IRCServer::sendMessage(int fd, const char * user, const char * password, const c
 	string room = roomName;
 	string user2 = user;
 	if(checkPassword(fd, user, password)) {
-		if(users.find(user) != users.end() && (users[user].compare(room) == 0)) { 
+		if(users.find(user) != users.end() && loopUsers(users[user], room)) { 
 			if(!(mess.find(room) != mess.end())) {
 				string s1 = "0 " + user2 + " " + message + "\r\n";
 				vector <string> v1;
