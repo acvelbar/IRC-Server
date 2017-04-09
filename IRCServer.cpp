@@ -553,8 +553,9 @@ IRCServer::getUsersInRoom(int fd, const char * user, const char * password, cons
 	if(checkPassword(fd, user, password)) {
 		map<string, string>::iterator it;
 		for(it = users.begin(); it != users.end(); it++) {
-			for(int i = 0; i < it->second.size(); i++) {
-				if(!(it->second[i].compare(args))) {
+			vector <string> v1 = it->second;
+			for(int i = 0; i < v1.size(); i++) {
+				if(!(v1[i].compare(args))) {
 					s1 += it->first + "\r\n";
 				}
 			}
