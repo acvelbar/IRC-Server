@@ -256,7 +256,7 @@ IRCServer::processRequest( int fd )
 		password1 = s1;
 	}
 	args1 = args1.substr(0, args1.size() - 2);
-	printf("|%s|", args1);
+	printf("|%s|", args1.c_str());
 	const char * command = command1.c_str();
 	const char * user = user1.c_str();
 	const char * password = password1.c_str();
