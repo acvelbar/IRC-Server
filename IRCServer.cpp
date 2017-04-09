@@ -480,7 +480,8 @@ IRCServer::sendMessage(int fd, const char * user, const char * password, const c
 				mess.insert(make_pair(room, v1));
 				mess[room].push_back(s1);
 			} else {
-				string s1 = (mess[room].size() + 1) + " " + user2 + " " + message + "\r\n";
+				int j = mess[room].size() + 1;
+				string s1 = to_string(j) + " " + user2 + " " + message + "\r\n";
 				mess[room].push_back(s1);
 			}
 			const char * msg = "OK\r\n";
@@ -490,7 +491,7 @@ IRCServer::sendMessage(int fd, const char * user, const char * password, const c
 			write(fd, msg, strlen(msg));
 		}
 	} else {
-		const char * msg = "ERROR (Wrong Password1)\r\n";
+		const char * msg = "ERROR (Wrong Password)\r\n";
 		write(fd, msg, strlen(msg));
 	}
 }
