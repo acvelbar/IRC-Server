@@ -520,7 +520,7 @@ IRCServer::getMessages(int fd, const char * user, const char * password, const c
 	char roomName[100];
 	int n = sscanf(args, "%d %[^\n]", &last, roomName);
 	if(checkPassword(fd, user, password)) {
-		if(users.find(user) != users.end() && !(users[user].compare(roomName))) {
+		if(users.find(user) != users.end() && loopUsers(users[user], roomName)) {
 			//int i = mess[roomName].size() - 100;
 			//if(0 > i) {
 			//	i = 0;
@@ -553,8 +553,10 @@ IRCServer::getUsersInRoom(int fd, const char * user, const char * password, cons
 	if(checkPassword(fd, user, password)) {
 		map<string, string>::iterator it;
 		for(it = users.begin(); it != users.end(); it++) {
-			if(!(it->second.compare(args))) {
-				s1 += it->first + "\r\n";
+			for(int i = 0; i < it->second.size(); i++) {
+				if(!(it->second[i].compare(args))) {
+					s1 += it->first + "\r\n";
+				}
 			}
 		}
 		const char * msg = s1.c_str();
