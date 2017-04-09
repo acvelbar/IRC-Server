@@ -490,7 +490,7 @@ IRCServer::sendMessage(int fd, const char * user, const char * password, const c
 			write(fd, msg, strlen(msg));
 		}
 	} else {
-		const char * msg = "ERROR (Wrong Password)\r\n";
+		const char * msg = "ERROR (Wrong Password1)\r\n";
 		write(fd, msg, strlen(msg));
 	}
 }
