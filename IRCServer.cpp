@@ -449,6 +449,9 @@ IRCServer::enterRoom(int fd, const char * user, const char * password, const cha
 				users[user].push_back(args);
 				const char * msg = "OK\r\n";
 				write(fd, msg, strlen(msg));
+			} else {
+				const char * msg = "OK\r\n";
+				write(fd, msg, strlen(msg));
 			}
 		}
 	} else {
