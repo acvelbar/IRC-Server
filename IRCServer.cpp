@@ -460,13 +460,14 @@ IRCServer::sendMessage(int fd, const char * user, const char * password, const c
 	char message[1025];
 	int n = sscanf(args, "%s %[^\n]", roomName, message);
 	string room = roomName;
+	string user2 = user;
 	if(checkPassword(fd, user, password)) {
 		if(users.find(user) != users.end() && !(users.find(user)->second.compare(room))) {
 			if(!(mess.find(room) != mess.end())) {
-				string s1 = "0 " + user + " " + mess + "\r\n";
+				string s1 = "0 " + user2 + " " + message + "\r\n";
 				mess.insert(make_pair(room, s1));
 			} else {
-				string s1 = numM[room] + " " + user + " " + message + "\r\n";
+				string s1 = numM[room] + " " + user2 + " " + message + "\r\n";
 				mess[room] += s1;
 			}
 			numM[room]++;
