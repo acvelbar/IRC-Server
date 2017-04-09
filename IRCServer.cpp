@@ -468,7 +468,7 @@ IRCServer::leaveRoom(int fd, const char * user, const char * password, const cha
 			int found = 0;
 			for(int i = 0; i < users[user].size(); i++) {
 				if(!(users[user][i].compare(args))) {
-					users.erase(user);
+					users[user].erase(users[user].begin() + i);
 					const char * msg = "OK\r\n";
 					write(fd, msg, strlen(msg));
 					found = 1;
