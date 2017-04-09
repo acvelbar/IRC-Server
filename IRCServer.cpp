@@ -35,6 +35,7 @@ const char * usage =
 #include <vector>
 #include <algorithm>
 #include <iostream>
+#include <stdio.h>
 
 #include "IRCServer.h"
 using namespace std;
@@ -255,7 +256,7 @@ IRCServer::processRequest( int fd )
 		password1 = s1;
 	}
 	args1 = args1.substr(0, args1.size() - 2);
-	cout << args1 << endl;
+	printf("|%s|", args1);
 	const char * command = command1.c_str();
 	const char * user = user1.c_str();
 	const char * password = password1.c_str();
