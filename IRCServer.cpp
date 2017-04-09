@@ -434,7 +434,7 @@ IRCServer::leaveRoom(int fd, const char * user, const char * password, const cha
 {
 	if(checkPassword(fd, user, password)) {
 		if(users.find(user) != users.end()) {
-			if(!(users.find(user)->second.compare(args))) {
+			if(!(users[user]->second.compare(args))) {
 				users.erase(user);
 				const char * msg = "OK\r\n";
 				write(fd, msg, strlen(msg));
@@ -461,7 +461,7 @@ IRCServer::sendMessage(int fd, const char * user, const char * password, const c
 	string room = roomName;
 	string user2 = user;
 	if(checkPassword(fd, user, password)) {
-		if(users.find(user) != users.end() && !(users.find(user)->second.compare(room))) {
+		if(users.find(user) != users.end() && !(users[user]->second.compare(room))) {
 			if(!(mess.find(room) != mess.end())) {
 				string s1 = "0 " + user2 + " " + message + "\r\n";
 				mess[room].push_back(s1);
@@ -484,12 +484,46 @@ IRCServer::sendMessage(int fd, const char * user, const char * password, const c
 void
 IRCServer::getMessages(int fd, const char * user, const char * password, const char * args)
 {
-	
+	int last;
+	char roomName[100];
+	int n = sscanf(args, "%d %[^\n]", &last, roomName);
+	if(checkPassword(fd, user, password)) {
+		if(users.find(user) != users.end() && !(users[user]->second.compare(roomName))) {
+			int i = mess[roomName].size() - 100;
+			if(0 > i) {
+				i = 0;
+			}
+			for(int j = 0; j < 100 && i < mess[roomName].size(); j++, i++) {
+				const char * msg = mess[roomName][i];
+				write(fd, msg, strlen(msg));
+			}
+		} else {
+			const char * msg = "ERROR (User not in room)";
+			write(fd, msg, strlen(msg));
+		}
+	} else {
+		const char * msg = "ERROR (Wrong Password)";
+		write(fd, msg, strlen(msg));
+	}
 }
 
 void
 IRCServer::getUsersInRoom(int fd, const char * user, const char * password, const char * args)
-{
+{	
+	string s1;
+	if(checkPassword(fd, user, password)) {
+		map<string, string>::iterator it;
+		for(it = users.begin(); it != users.end(); it++) {
+			if(!(it->second.compare(args))) {
+				s1 += it->first + "\r\n";
+			}
+		}
+		const char * msg = s1;
+		write(fd, msg, strlen(msg));
+	} else {
+		const char * msg = "ERROR (Wrong Password)";
+		write(fd, msg, strlen(msg));
+	}
 }
 
 void
