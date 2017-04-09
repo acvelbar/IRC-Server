@@ -501,11 +501,11 @@ IRCServer::getMessages(int fd, const char * user, const char * password, const c
 	int n = sscanf(args, "%d %[^\n]", &last, roomName);
 	if(checkPassword(fd, user, password)) {
 		if(users.find(user) != users.end() && !(users[user].compare(roomName))) {
-			int i = mess[roomName].size() - 100;
-			if(0 > i) {
-				i = 0;
-			}
-			for(int j = 0; j < 100 && i < mess[roomName].size() && j <= last; j++, i++) {
+			//int i = mess[roomName].size() - 100;
+			//if(0 > i) {
+			//	i = 0;
+			//}
+			for(int i = last; i < mess[roomName].size(); i++) {
 				const char * msg = mess[roomName][i].c_str();
 				write(fd, msg, strlen(msg));
 			}
