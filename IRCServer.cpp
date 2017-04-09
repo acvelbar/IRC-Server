@@ -511,7 +511,7 @@ IRCServer::getMessages(int fd, const char * user, const char * password, const c
 			//if(0 > i) {
 			//	i = 0;
 			//}
-			if(last + 1 == mess[roomName].size()) {
+			if(last + 1 >= mess[roomName].size()) {
 				const char * msg = "NO-NEW-MESSAGES\r\n";
 				write(fd, msg, strlen(msg));
 			} else {
