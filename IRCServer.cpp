@@ -475,12 +475,12 @@ IRCServer::sendMessage(int fd, const char * user, const char * password, const c
 	if(checkPassword(fd, user, password)) {
 		if(users.find(user) != users.end() && (users[user].compare(room) == 0)) { 
 			if(!(mess.find(room) != mess.end())) {
-				string s1 = "1 " + user2 + " " + message + "\r\n";
+				string s1 = "0 " + user2 + " " + message + "\r\n";
 				vector <string> v1;
 				mess.insert(make_pair(room, v1));
 				mess[room].push_back(s1);
 			} else {
-				int j = mess[room].size() + 1;
+				int j = mess[room].size();
 				string s1 = to_string(j) + " " + user2 + " " + message + "\r\n";
 				mess[room].push_back(s1);
 			}
