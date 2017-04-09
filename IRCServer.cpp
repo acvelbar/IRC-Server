@@ -438,6 +438,9 @@ IRCServer::enterRoom(int fd, const char * user, const char * password, const cha
 			const char * msg = "OK\r\n";
 			write(fd, msg, strlen(msg));
 		}
+	} else {
+		const char * msg = "ERROR (Wrong password)\r\n";
+		write(fd, msg, strlen(msg));
 	}
 }
 
@@ -487,7 +490,7 @@ IRCServer::sendMessage(int fd, const char * user, const char * password, const c
 			const char * msg = "OK\r\n";
 			write(fd, msg, strlen(msg));
 		} else {
-			const char * msg = "DENIED\r\n";
+			const char * msg = "user not in room\r\n";
 			write(fd, msg, strlen(msg));
 		}
 	} else {
@@ -519,7 +522,7 @@ IRCServer::getMessages(int fd, const char * user, const char * password, const c
 			write(fd, msg, strlen(msg));
 		}
 	} else {
-		const char * msg = "ERROR (Wrong Password)\r\n";
+		const char * msg = "ERROR (Wrong password)\r\n";
 		write(fd, msg, strlen(msg));
 	}
 }
