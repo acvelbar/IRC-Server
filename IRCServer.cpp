@@ -462,9 +462,11 @@ IRCServer::sendMessage(int fd, const char * user, const char * password, const c
 	if(checkPassword(fd, user, password)) {
 		if(users.find(user) != users.end() && !(users.find(user)->second.compare(roomName))) {
 			if(messages.find(roomName) == messages.end()) {
-				messages.insert(make_pair(roomName, "0 " + user + " " + message + "\r\n"));
+				string s1 = "0 " + user + " " + message + "\r\n";
+				messages.insert(make_pair(roomName, s1));
 			} else {
-				messages[roomName] += numM[roomName] + " " + user + " " + message + "\r\n";
+				string s1 = numM[roomName] + " " + user + " " + message + "\r\n";
+				messages[roomName] += s1;
 			}
 			numM[roomName]++;
 			const char * msg = "OK\r\n";
