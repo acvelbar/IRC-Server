@@ -434,7 +434,7 @@ IRCServer::leaveRoom(int fd, const char * user, const char * password, const cha
 {
 	if(checkPassword(fd, user, password)) {
 		if(users.find(user) != users.end()) {
-			if(!(users[user]->second.compare(args))) {
+			if(!(users[user].compare(args))) {
 				users.erase(user);
 				const char * msg = "OK\r\n";
 				write(fd, msg, strlen(msg));
@@ -461,7 +461,7 @@ IRCServer::sendMessage(int fd, const char * user, const char * password, const c
 	string room = roomName;
 	string user2 = user;
 	if(checkPassword(fd, user, password)) {
-		if(users.find(user) != users.end() && !(users[user]->second.compare(room))) {
+		if(users.find(user) != users.end() && !(users[user].compare(room))) {
 			if(!(mess.find(room) != mess.end())) {
 				string s1 = "0 " + user2 + " " + message + "\r\n";
 				mess[room].push_back(s1);
@@ -488,7 +488,7 @@ IRCServer::getMessages(int fd, const char * user, const char * password, const c
 	char roomName[100];
 	int n = sscanf(args, "%d %[^\n]", &last, roomName);
 	if(checkPassword(fd, user, password)) {
-		if(users.find(user) != users.end() && !(users[user]->second.compare(roomName))) {
+		if(users.find(user) != users.end() && !(users[user].compare(roomName))) {
 			int i = mess[roomName].size() - 100;
 			if(0 > i) {
 				i = 0;
