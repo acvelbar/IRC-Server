@@ -473,7 +473,7 @@ IRCServer::leaveRoom(int fd, const char * user, const char * password, const cha
 }
 
 int loopUsers(vector<string> s1, string s2) {
-	for(int i = 0, i < s1.size(), i++) {
+	for(int i = 0; i < s1.size(); i++) {
 		if(!(s1[i].compare(s2))) {
 			return 1; //FOUND
 		}
