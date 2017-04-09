@@ -253,7 +253,7 @@ IRCServer::processRequest( int fd )
 	} else {
 		password1 = s1;
 	}
-	args1 = args1.substr(0, str.size() - 2);
+	args1 = args1.substr(0, args1.size() - 2);
 	const char * command = command1.c_str();
 	const char * user = user1.c_str();
 	const char * password = password1.c_str();
