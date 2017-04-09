@@ -419,6 +419,16 @@ IRCServer::listRooms(int fd, const char * user, const char * password, const cha
 	}
 	return;
 }
+
+int loopUsers(vector<string> s1, string s2) {
+	for(int i = 0; i < s1.size(); i++) {
+		if(!(s1[i].compare(s2))) {
+			return 1; //FOUND
+		}
+	}
+	return 0; //No match
+}
+
 void
 IRCServer::enterRoom(int fd, const char * user, const char * password, const char * args)
 {
@@ -433,11 +443,13 @@ IRCServer::enterRoom(int fd, const char * user, const char * password, const cha
 			const char * message = "ERROR (No room)\r\n";
 			write(fd, message, strlen(message));
 		} else {
-			vector<string> v1;
-			users.insert(make_pair(user, v1));
-			users[user].push_back(args);
-			const char * msg = "OK\r\n";
-			write(fd, msg, strlen(msg));
+			if(users.search(user) == users.end() || !loopUsers(users[user], args)) {
+				vector<string> v1;
+				users.insert(make_pair(user, v1));
+				users[user].push_back(args);
+				const char * msg = "OK\r\n";
+				write(fd, msg, strlen(msg));
+			}
 		}
 	} else {
 		const char * msg = "ERROR (Wrong password)\r\n";
@@ -471,15 +483,6 @@ IRCServer::leaveRoom(int fd, const char * user, const char * password, const cha
 		const char * msg = "ERROR (Wrong password)\r\n";
 		write(fd, msg, strlen(msg));
 	}	
-}
-
-int loopUsers(vector<string> s1, string s2) {
-	for(int i = 0; i < s1.size(); i++) {
-		if(!(s1[i].compare(s2))) {
-			return 1; //FOUND
-		}
-	}
-	return 0; //No match
 }
 
 void
