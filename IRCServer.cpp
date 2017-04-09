@@ -41,7 +41,7 @@ using namespace std;
 int QueueLength = 5;
 int totalRooms = 0;
 map<string, string> users; //username, room
-map<string, string> mess;	//room, allmessages
+map<string, vector<string>> mess;	//room, allmessages
 map<string, int> numM;
 fstream passFile;
 
@@ -381,7 +381,6 @@ IRCServer::createRoom(int fd, const char * user, const char * password, const ch
 			totalRooms++;
 			const char * message = "OK\r\n";
 			write(fd, message, strlen(message));
-			numM.insert(make_pair(args, 0));
 		} else {
 			const char * message = "DENIED\r\n";
 			write(fd, message, strlen(message));
@@ -465,12 +464,11 @@ IRCServer::sendMessage(int fd, const char * user, const char * password, const c
 		if(users.find(user) != users.end() && !(users.find(user)->second.compare(room))) {
 			if(!(mess.find(room) != mess.end())) {
 				string s1 = "0 " + user2 + " " + message + "\r\n";
-				mess.insert(make_pair(room, s1));
+				mess[room].push_back(s1);
 			} else {
-				string s1 = numM[room] + " " + user2 + " " + message + "\r\n";
-				mess[room] += s1;
+				string s1 = mess[room].size() + " " + user2 + " " + message + "\r\n";
+				mess[room].push_back(s1);
 			}
-			numM[room]++;
 			const char * msg = "OK\r\n";
 			write(fd, msg, strlen(msg));
 		} else {
@@ -486,6 +484,7 @@ IRCServer::sendMessage(int fd, const char * user, const char * password, const c
 void
 IRCServer::getMessages(int fd, const char * user, const char * password, const char * args)
 {
+	
 }
 
 void
