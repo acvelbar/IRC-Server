@@ -422,7 +422,7 @@ IRCServer::enterRoom(int fd, const char * user, const char * password, const cha
 			const char * message = "ERROR (No room)\r\n";
 			write(fd, message, strlen(message));
 		} else {
-			users.insert(make_pair(user, args));
+			users[user] = args;
 			const char * msg = "OK\r\n";
 			write(fd, msg, strlen(msg));
 		}
@@ -461,7 +461,7 @@ IRCServer::sendMessage(int fd, const char * user, const char * password, const c
 	string room = roomName;
 	string user2 = user;
 	if(checkPassword(fd, user, password)) {
-		if(users.find(user) != users.end() /*&& !(users[user].compare(room))*/) {
+		if(users.find(user) != users.end() && !(users[user].compare(room))) {
 			if(!(mess.find(room) != mess.end())) {
 				string s1 = "0 " + user2 + " " + message + "\r\n";
 				mess[room].push_back(s1);
