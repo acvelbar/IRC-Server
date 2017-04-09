@@ -443,7 +443,7 @@ IRCServer::enterRoom(int fd, const char * user, const char * password, const cha
 			const char * message = "ERROR (No room)\r\n";
 			write(fd, message, strlen(message));
 		} else {
-			if(users.search(user) == users.end() || !loopUsers(users[user], args)) {
+			if(users.find(user) == users.end() || !loopUsers(users[user], args)) {
 				vector<string> v1;
 				users.insert(make_pair(user, v1));
 				users[user].push_back(args);
