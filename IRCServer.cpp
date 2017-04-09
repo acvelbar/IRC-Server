@@ -508,7 +508,7 @@ IRCServer::getMessages(int fd, const char * user, const char * password, const c
 			//if(0 > i) {
 			//	i = 0;
 			//}
-			for(int i = last; i < mess[roomName].size(); i++) {
+			for(int i = last + 1; i < mess[roomName].size(); i++) {
 				const char * msg = mess[roomName][i].c_str();
 				write(fd, msg, strlen(msg));
 			}
