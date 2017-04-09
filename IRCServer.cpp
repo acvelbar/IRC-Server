@@ -494,7 +494,7 @@ IRCServer::getMessages(int fd, const char * user, const char * password, const c
 				i = 0;
 			}
 			for(int j = 0; j < 100 && i < mess[roomName].size(); j++, i++) {
-				const char * msg = mess[roomName][i];
+				const char * msg = mess[roomName][i].c_str();
 				write(fd, msg, strlen(msg));
 			}
 		} else {
@@ -518,7 +518,7 @@ IRCServer::getUsersInRoom(int fd, const char * user, const char * password, cons
 				s1 += it->first + "\r\n";
 			}
 		}
-		const char * msg = s1;
+		const char * msg = s1.c_str();
 		write(fd, msg, strlen(msg));
 	} else {
 		const char * msg = "ERROR (Wrong Password)";
