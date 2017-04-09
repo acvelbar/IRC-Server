@@ -443,7 +443,7 @@ IRCServer::leaveRoom(int fd, const char * user, const char * password, const cha
 				write(fd, msg, strlen(msg));
 			}
 		} else {
-			const char * msg = "ERROR (No user in room)";
+			const char * msg = "ERROR (No user in room)\r\n";
 			write(fd, msg, strlen(msg));
 		}
 	} else {
@@ -476,7 +476,7 @@ IRCServer::sendMessage(int fd, const char * user, const char * password, const c
 			write(fd, msg, strlen(msg));
 		}
 	} else {
-		const char * msg = "ERROR (Wrong Password)";
+		const char * msg = "ERROR (Wrong Password)\r\n";
 		write(fd, msg, strlen(msg));
 	}
 }
