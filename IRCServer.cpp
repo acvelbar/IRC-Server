@@ -41,7 +41,7 @@ using namespace std;
 int QueueLength = 5;
 int totalRooms = 0;
 map<string, string> users; //username, room
-map<string, string> messages;	//room, allmessages
+map<string, string> mess;	//room, allmessages
 map<string, int> numM;
 fstream passFile;
 
@@ -462,12 +462,12 @@ IRCServer::sendMessage(int fd, const char * user, const char * password, const c
 	string room = roomName;
 	if(checkPassword(fd, user, password)) {
 		if(users.find(user) != users.end() && !(users.find(user)->second.compare(room))) {
-			if(!(messages.find(room) != messages.end())) {
-				string s1 = "0 " + user + " " + message + "\r\n";
-				messages.insert(make_pair(room, s1));
+			if(!(mess.find(room) != mess.end())) {
+				string s1 = "0 " + user + " " + mess + "\r\n";
+				mess.insert(make_pair(room, s1));
 			} else {
 				string s1 = numM[room] + " " + user + " " + message + "\r\n";
-				messages[room] += s1;
+				mess[room] += s1;
 			}
 			numM[room]++;
 			const char * msg = "OK\r\n";
