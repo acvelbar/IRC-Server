@@ -456,6 +456,7 @@ IRCServer::leaveRoom(int fd, const char * user, const char * password, const cha
 					users.erase(user);
 					const char * msg = "OK\r\n";
 					write(fd, msg, strlen(msg));
+					found = 1;
 				}
 			}
 			if(!found) {
