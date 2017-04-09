@@ -30,7 +30,7 @@ const char * usage =
 #include <stdio.h>
 #include <time.h>
 #include <string>
-#include <unordered_map>
+#include <map>
 #include <fstream>
 #include <vector>
 #include <algorithm>
@@ -40,7 +40,8 @@ using namespace std;
 
 int QueueLength = 5;
 int totalRooms = 0;
-std::unordered_map<std::string, std::string> users;
+map<string, string> users;
+map<string, map<int, string>> messages;
 fstream passFile;
 
 vector<string> usernames;
@@ -384,7 +385,7 @@ IRCServer::createRoom(int fd, const char * user, const char * password, const ch
 			write(fd, message, strlen(message));
 		}
 	} else {
-		const char * message = "ERROR (Incorrect password)\r\n";
+		const char * message = "ERROR (Wrong password)\r\n";
 		write(fd, message, strlen(message));
 	}
 	return;
@@ -401,7 +402,7 @@ IRCServer::listRooms(int fd, const char * user, const char * password, const cha
 			write(fd, msg, strlen(msg));
 		}
 	} else { 
-		const char * message = "ERROR (Incorrect password)\r\n";
+		const char * message = "ERROR (Wrong password)\r\n";
 		write(fd, message, strlen(message));
 	}
 	return;
@@ -417,10 +418,12 @@ IRCServer::enterRoom(int fd, const char * user, const char * password, const cha
 			}
 		}
 		if(!roomFound) {
-			const char * message = "ERROR (Room not found)\r\n";
+			const char * message = "ERROR (No room)\r\n";
 			write(fd, message, strlen(message));
 		} else {
-			
+			users.insert(make_pair(user, args));
+			const char * msg = "OK\r\n";
+			write(fd, msg, strlen(msg));
 		}
 	}
 }
@@ -428,6 +431,24 @@ IRCServer::enterRoom(int fd, const char * user, const char * password, const cha
 void
 IRCServer::leaveRoom(int fd, const char * user, const char * password, const char * args)
 {
+	if(checkPassword(fd, user, password)) {
+		if(users.find(user) != users.end()) {
+			if(!users.find(user)->second.compare(args)) {
+				users.erase(user);
+				const char * msg = "OK\r\n";
+				write(fd, msg, strlen(msg));
+			} else {
+				const char * msg = "DENIED\r\n";
+				write(fd, msg, strlen(msg));
+			}
+		} else {
+			const char * msg = "ERROR (User not in room)";
+			write(fd, msg, strlen(msg));
+		}
+	} else {
+		const char * msg = "ERROR (Wrong password)\r\n";
+		write(fd, msg, strlen(msg));
+	}	
 }
 
 void
