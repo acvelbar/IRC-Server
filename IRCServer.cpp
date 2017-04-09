@@ -433,7 +433,7 @@ IRCServer::leaveRoom(int fd, const char * user, const char * password, const cha
 {
 	if(checkPassword(fd, user, password)) {
 		if(users.find(user) != users.end()) {
-			if(!users.find(user)->second.compare(args)) {
+			if(!(users.find(user)->second.compare(args))) {
 				users.erase(user);
 				const char * msg = "OK\r\n";
 				write(fd, msg, strlen(msg));
@@ -442,7 +442,7 @@ IRCServer::leaveRoom(int fd, const char * user, const char * password, const cha
 				write(fd, msg, strlen(msg));
 			}
 		} else {
-			const char * msg = "ERROR (User not in room)";
+			const char * msg = "ERROR (User not in a room)";
 			write(fd, msg, strlen(msg));
 		}
 	} else {
@@ -454,6 +454,23 @@ IRCServer::leaveRoom(int fd, const char * user, const char * password, const cha
 void
 IRCServer::sendMessage(int fd, const char * user, const char * password, const char * args)
 {
+	char roomName[100];
+	char message[1025];
+	int n = sscanf(args, "%s %[^\n]", roomName, message);
+	if(checkPassword(fd, user, password)) {
+		if(users.find(user) != users.end() && !(users.find(user)->second.compare(roomName))) {
+			if(messages.find(roomName) == messages.end()) {
+				messages[roomName][0] = message;
+			} else {
+				messages[roomName][messages.find(roomName).size()] = message;
+			}
+			const char * msg = "OK\r\n";
+			write(fd, msg, strlen(msg));
+		}
+	} else {
+		const char * msg = "ERROR (Wrong Password)";
+		write(fd, msg, strlen(msg));
+	}
 }
 
 void
