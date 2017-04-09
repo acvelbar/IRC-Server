@@ -443,7 +443,7 @@ IRCServer::leaveRoom(int fd, const char * user, const char * password, const cha
 				write(fd, msg, strlen(msg));
 			}
 		} else {
-			const char * msg = "ERROR (User not in a room)";
+			const char * msg = "ERROR (No user in room)";
 			write(fd, msg, strlen(msg));
 		}
 	} else {
@@ -497,12 +497,14 @@ IRCServer::getMessages(int fd, const char * user, const char * password, const c
 				const char * msg = mess[roomName][i].c_str();
 				write(fd, msg, strlen(msg));
 			}
+			const char * msg = "\r\n";
+			write(fd, msg, strlen(msg));
 		} else {
-			const char * msg = "ERROR (User not in room)";
+			const char * msg = "ERROR (User not in room)\r\n";
 			write(fd, msg, strlen(msg));
 		}
 	} else {
-		const char * msg = "ERROR (Wrong Password)";
+		const char * msg = "ERROR (Wrong Password)\r\n";
 		write(fd, msg, strlen(msg));
 	}
 }
@@ -520,8 +522,10 @@ IRCServer::getUsersInRoom(int fd, const char * user, const char * password, cons
 		}
 		const char * msg = s1.c_str();
 		write(fd, msg, strlen(msg));
+		const char * msg = "\r\n";
+		write(fd, msg, strlen(msg));
 	} else {
-		const char * msg = "ERROR (Wrong Password)";
+		const char * msg = "ERROR (Wrong Password)\r\n";
 		write(fd, msg, strlen(msg));
 	}
 }
