@@ -231,7 +231,7 @@ IRCServer::processRequest( int fd )
 	printf("You need to separate the commandLine into those components\n");
 	printf("For now, command, user, and password are hardwired.\n");
 	
-	std::string s1 = std::string(commandLine);
+/*	std::string s1 = std::string(commandLine);
 	std::string command1;
 	std::string user1;
 	std::string password1;
@@ -255,11 +255,21 @@ IRCServer::processRequest( int fd )
 	} else {
 		password1 = s1;
 	}
-	args1 = args1.substr(0, args1.size() - 2);
-	const char * command = command1.c_str();
-	const char * user = user1.c_str();
-	const char * password = password1.c_str();
-	const char * args = args1.c_str();
+*/
+	char command1[1025];
+	char user1[1025];
+	char password1[1025];
+	char args1[1025];
+	memset(command1, 0, 1025);
+	memset(user1, 0, 1025);
+	memset(password1, 0, 1025);
+	memset(args1, 0, 1025);
+	int nRead = sscanf(commandLine, "%s %s %s %[^\n]", command1, user1, password1, args1);
+
+	const char * command = command1;
+	const char * user = user1;
+	const char * password = password1;
+	const char * args = args1;
 	printf("command=%s\n", command);
 	printf("user=%s\n", user);
 	printf( "password=%s\n", password );
