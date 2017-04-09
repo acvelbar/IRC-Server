@@ -490,7 +490,7 @@ IRCServer::sendMessage(int fd, const char * user, const char * password, const c
 			const char * msg = "OK\r\n";
 			write(fd, msg, strlen(msg));
 		} else {
-			const char * msg = "user not in room\r\n";
+			const char * msg = "ERROR (user not in room)\r\n";
 			write(fd, msg, strlen(msg));
 		}
 	} else {
@@ -511,12 +511,17 @@ IRCServer::getMessages(int fd, const char * user, const char * password, const c
 			//if(0 > i) {
 			//	i = 0;
 			//}
-			for(int i = last + 1; i < mess[roomName].size(); i++) {
-				const char * msg = mess[roomName][i].c_str();
+			if(last + 1 == mess[roomName].size()) {
+				const char * msg = "NO-NEW-MESSAGES\r\n";
+				write(fd, msg, strlen(msg));
+			} else {
+				for(int i = last + 1; i < mess[roomName].size(); i++) {
+					const char * msg = mess[roomName][i].c_str();
+					write(fd, msg, strlen(msg));
+				}
+				const char * msg = "\r\n";
 				write(fd, msg, strlen(msg));
 			}
-			const char * msg = "\r\n";
-			write(fd, msg, strlen(msg));
 		} else {
 			const char * msg = "ERROR (User not in room)\r\n";
 			write(fd, msg, strlen(msg));
