@@ -226,9 +226,7 @@ IRCServer::processRequest( int fd )
 	printf("RECEIVED: %s\n", commandLine);
 
 	printf("The commandLine has the following format:\n");
-	printf("COMMAND <user> <password> <arguments>. See below.\n");
-	printf("You need to separate the commandLine into those components\n");
-	printf("For now, command, user, and password are hardwired.\n");
+	printf("COMMAND <user> <password> <arguments>.\n");
 	
 /*	std::string s1 = std::string(commandLine);
 	std::string command1;
