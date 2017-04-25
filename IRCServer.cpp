@@ -362,6 +362,7 @@ IRCServer::addUser(int fd, const char * user, const char * password, const char 
 		}
 	}
 	if(found) {
+		printf("2");
 		const char * message = "DENIED\r\n";
 		write(fd, message, strlen(message));
 	} else {
@@ -370,6 +371,7 @@ IRCServer::addUser(int fd, const char * user, const char * password, const char 
 		passFile.close();
 		usernames.push_back(user);
 		passwords.push_back(password);
+		printf("1");
 		const char * message = "OK\r\n";
 		write(fd, message, strlen(message));
 	}
