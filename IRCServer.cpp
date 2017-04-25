@@ -368,6 +368,7 @@ IRCServer::addUser(int fd, const char * user, const char * password, const char 
 		passFile.open("password.txt");
 		passFile << user << "\n" << password << "\n\n";
 		passFile.close();
+		printf("\nActually adding user\n");
 		usernames.push_back(user);
 		passwords.push_back(password);
 		const char * message = "OK\r\n";
