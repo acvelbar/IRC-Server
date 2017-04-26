@@ -5,6 +5,6 @@
 ./test-server5.sh ./IRCServer 3052   : 5   of 5  
 ./test-server6.sh ./IRCServer 3052   : 5   of 5  
 ./test-server7.sh ./IRCServer 3052   : 5   of 5  
-./test-server8.sh ./IRCServer 3052   : 5   of 5  
-./test-server9.sh ./IRCServer 3052   : 5   of 5  
-./test-server10.sh ./IRCServer 3052   : 5   of 5  
+./test-server8.sh ./IRCServer 3052   : 0   of 5  
+./test-server9.sh ./IRCServer 3052   : 0   of 5  
+./test-server10.sh ./IRCServer 3052   : 0   of 5  
